@@ -1,4 +1,4 @@
-# pgponline — OnlinePGP clone (client-side)
+# pgponline — A Client-Side PGP Encryption Tool
 
 Created by Rohan Martin Kells
 

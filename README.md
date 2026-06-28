@@ -20,6 +20,3 @@ How to use:
 - Open [the PGP Tool](https://rohan-m-kells.github.io/pgponline/) or index.html in a modern browser (Chrome/Firefox/Edge/Safari).
 - Generate a keypair, or paste existing armored keys into the key fields.
 - Use the Encrypt / Decrypt / Sign / Verify buttons.
-
-Want me to:
-- Add examples, localization, or a test suite?

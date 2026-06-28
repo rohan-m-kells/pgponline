@@ -43,8 +43,8 @@
         userIDs: userIDs,
         passphrase: passphrase,
       });
-      pubEl.value = key.publicKeyArmored || key.publicKey;
-      privEl.value = key.privateKeyArmored || key.privateKey;
+      pubEl.value = key.publicKey;
+      privEl.value = key.privateKey;
       alert('Keypair generated. Copy your keys and keep your private key safe.');
     }catch(err){
       console.error(err);
@@ -63,7 +63,7 @@
       const pubKey = await openpgp.readKey({ armoredKey: armoredPub });
       const message = await openpgp.createMessage({ text: plaintext });
       const encrypted = await openpgp.encrypt({ message, encryptionKeys: pubKey });
-      ciphertextEl.value = encrypted;
+      ciphertextEl.value = encrypted.data;
     }catch(err){
       console.error(err);
       alert('Encryption error: ' + err.message);
@@ -124,9 +124,12 @@
       const signature = await openpgp.readSignature({ armoredSignature: sig });
       const verification = await openpgp.verify({ message, signature, verificationKeys: publicKey });
       const { signatures } = verification;
-      const validity = await signatures[0].verified; // throws on bad sig in v5
-      await validity; // will reject if invalid
-      alert('Signature is valid');
+      // Check if signature is valid
+      if (signatures && signatures.length > 0 && signatures[0].verified) {
+        alert('Signature is valid');
+      } else {
+        alert('Signature verification failed');
+      }
     }catch(err){
       console.error(err);
       alert('Verification failed: ' + (err.message || err));

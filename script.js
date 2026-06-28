@@ -63,7 +63,9 @@
       const pubKey = await openpgp.readKey({ armoredKey: armoredPub });
       const message = await openpgp.createMessage({ text: plaintext });
       const encrypted = await openpgp.encrypt({ message, encryptionKeys: pubKey });
-      ciphertextEl.value = encrypted.data;
+      // encrypted.message is a Message object, need to armor it
+      const armoredCiphertext = await encrypted.message.armor();
+      ciphertextEl.value = armoredCiphertext;
     }catch(err){
       console.error(err);
       alert('Encryption error: ' + err.message);
@@ -102,8 +104,10 @@
       let privateKey = await openpgp.readPrivateKey({ armoredKey: armoredPriv });
       if(pass){ privateKey = await openpgp.decryptKey({ privateKey, passphrase: pass }); }
       const message = await openpgp.createMessage({ text: data });
-      const detached = await openpgp.sign({ message, signingKeys: privateKey, detached: true });
-      ciphertextEl.value = detached; // put detached signature into ciphertext box
+      const detachedSig = await openpgp.sign({ message, signingKeys: privateKey, detached: true });
+      // detachedSig is a Message object, need to armor it
+      const armoredSig = await detachedSig.armor();
+      ciphertextEl.value = armoredSig; // put detached signature into ciphertext box
     }catch(err){
       console.error(err);
       alert('Signing error: ' + err.message);
@@ -125,14 +129,19 @@
       const verification = await openpgp.verify({ message, signature, verificationKeys: publicKey });
       const { signatures } = verification;
       // Check if signature is valid
-      if (signatures && signatures.length > 0 && signatures[0].verified) {
-        alert('Signature is valid');
+      if (signatures && signatures.length > 0) {
+        try {
+          await signatures[0].verified;
+          alert('Signature is valid ✓');
+        } catch(e) {
+          alert('Signature verification failed: ' + (e.message || 'Invalid signature'));
+        }
       } else {
-        alert('Signature verification failed');
+        alert('No signatures found');
       }
     }catch(err){
       console.error(err);
-      alert('Verification failed: ' + (err.message || err));
+      alert('Verification error: ' + (err.message || err));
     }
   }
 

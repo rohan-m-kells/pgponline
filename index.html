@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Online PGP — Local Browser PGP (clone)</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- OpenPGP.js from unpkg CDN -->
+  <script src="https://unpkg.com/openpgp@5.6.0/dist/openpgp.min.js"></script>
+</head>
+<body>
+  <main class="container">
+    <h1>Online PGP — Browser PGP (local clone)</h1>
+    <p class="muted">This is a client-side PGP utility (encrypt / decrypt / sign / verify) that runs entirely in your browser using OpenPGP.js. Keys and plaintext never leave your machine.</p>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Keypair</h2>
+        <label>Full name / user id
+          <input id="uid" value="User <user@example.com>" />
+        </label>
+        <label>Passphrase (private key)
+          <input id="passphrase" placeholder="optional passphrase" />
+        </label>
+        <div class="buttons">
+          <button id="genKey">Generate Keypair</button>
+          <button id="clearKeys">Clear Keys</button>
+        </div>
+        <label>Public Key
+          <textarea id="publicKey" placeholder="Public key will appear here" rows="8"></textarea>
+        </label>
+        <label>Private Key
+          <textarea id="privateKey" placeholder="Private key will appear here" rows="8"></textarea>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>Encrypt / Decrypt</h2>
+        <label>Plaintext
+          <textarea id="plaintext" rows="8" placeholder="Message to encrypt"></textarea>
+        </label>
+        <label>Ciphertext / Output
+          <textarea id="ciphertext" rows="8" placeholder="Encrypted message or verification output"></textarea>
+        </label>
+        <label>Recipient Public Key (armored)
+          <textarea id="recipientPub" rows="6" placeholder="Paste recipient public key here (armored)"></textarea>
+        </label>
+        <label>Recipient Private Key (for decrypting)
+          <textarea id="recipientPriv" rows="6" placeholder="Paste private key here to decrypt"></textarea>
+        </label>
+        <label>Passphrase for recipient private key
+          <input id="recipientPass" placeholder="passphrase (if any)" />
+        </label>
+        <div class="buttons">
+          <button id="encrypt">Encrypt</button>
+          <button id="decrypt">Decrypt</button>
+        </div>
+
+        <h3>Sign / Verify</h3>
+        <label>Signer Private Key (armored)
+          <textarea id="signPriv" rows="6" placeholder="Private key to sign with"></textarea>
+        </label>
+        <label>Signer Passphrase
+          <input id="signPass" placeholder="signer passphrase (if any)" />
+        </label>
+        <label>Verifier Public Key (armored)
+          <textarea id="verifyPub" rows="6" placeholder="Public key to verify with"></textarea>
+        </label>
+        <div class="buttons">
+          <button id="sign">Sign (detached)</button>
+          <button id="verify">Verify</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="muted">This project is a functional clone for local use. It is not affiliated with the original site.</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

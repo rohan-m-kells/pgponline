@@ -1,0 +1,12 @@
+{
+  "name": "pgponline",
+  "version": "1.0.0",
+  "description": "A client-side PGP encryption tool for your browser",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000"
+  },
+  "keywords": ["pgp", "encryption", "decryption", "security", "cryptography"],
+  "author": "rohan-m-kells",
+  "license": "MIT"
+}
